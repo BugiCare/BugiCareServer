@@ -18,7 +18,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    
+
     // 테스트용
     @GetMapping("/userInfo")
     public User userInfo() {
