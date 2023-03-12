@@ -7,16 +7,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-@Table(name = "Refrigerator")
+@Table(name = "Sleep")
 @Entity
-public class Refrigerator {
+public class Sleep {
 
     @Id
     private Long id;
 
-    private int count;
+    private LocalDateTime start_time;
+
     private Timestamp timestamp;
 }
