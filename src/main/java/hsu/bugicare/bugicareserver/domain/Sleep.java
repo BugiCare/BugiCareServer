@@ -1,12 +1,10 @@
 package hsu.bugicare.bugicareserver.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
@@ -20,5 +18,6 @@ public class Sleep {
 
     private LocalDateTime start_time;
 
-    private Timestamp timestamp;
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Data timestamp;
 }

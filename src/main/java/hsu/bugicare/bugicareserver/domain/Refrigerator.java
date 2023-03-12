@@ -1,12 +1,10 @@
 package hsu.bugicare.bugicareserver.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 @Getter
 @NoArgsConstructor
@@ -18,5 +16,7 @@ public class Refrigerator {
     private Long id;
 
     private int count;
-    private Timestamp timestamp;
+
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date timestamp;
 }

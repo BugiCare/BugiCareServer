@@ -1,8 +1,10 @@
 package hsu.bugicare.bugicareserver.service;
 
-import org.springframework.stereotype.Service;
+import hsu.bugicare.bugicareserver.dto.UserResponseDto;
 
-@Service
-public class UserService {
+import java.util.List;
 
+public interface UserService {
+    UserResponseDto getUser(Long id);
+    List<UserResponseDto> getAllUser();
 }

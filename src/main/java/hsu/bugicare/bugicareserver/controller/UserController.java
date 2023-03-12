@@ -18,4 +18,14 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
+    @GetMapping("/allUser")
+    public List<User> allUser() {
+
+    }
+
+    @GetMapping("/user/{id}")
+    public User user() {
+
+    }
 }

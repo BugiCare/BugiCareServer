@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "Image")
 @Entity
-public class Image {
+public class PiCameraImage {
 
     @Id
     private Long id;

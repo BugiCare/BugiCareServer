@@ -17,12 +17,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long manager_id;
+    @ManyToOne
+    @JoinColumn(name="manager_id")
+    private Manager manager;
 
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private String gender;
 
     @Column(nullable = false)
@@ -34,6 +37,22 @@ public class User {
     @Column(nullable = false)
     private String phone;
 
+    @OneToOne
+    @JoinColumn(name = "REFRIGERATOR_ID")
+    private Refrigerator refrigerator;
+
+    @OneToOne
+    @JoinColumn(name = "DOOR_ID")
+    private Door door;
+
+    @OneToOne
+    @JoinColumn(name = "IMAGE_ID")
+    private PiCameraImage image;
+
+    @OneToOne
+    @JoinColumn(name = "SLEEP_ID")
+    private Sleep sleep;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
@@ -42,5 +61,6 @@ public class User {
     @Builder
     public User(String name, String gender, String address, int age, String phone) {
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }
