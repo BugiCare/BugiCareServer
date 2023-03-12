@@ -5,6 +5,6 @@ import hsu.bugicare.bugicareserver.dto.UserResponseDto;
 import java.util.List;
 
 public interface UserService {
-    UserResponseDto getUser(Long id);
-    List<UserResponseDto> getAllUser();
+    UserResponseDto findUser(Long id);
+    List<UserResponseDto> findAllUser();
 }

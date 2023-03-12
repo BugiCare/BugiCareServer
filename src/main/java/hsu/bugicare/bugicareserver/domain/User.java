@@ -47,7 +47,7 @@ public class User {
 
     @OneToOne
     @JoinColumn(name = "IMAGE_ID")
-    private PiCameraImage image;
+    private UserImage image;
 
     @OneToOne
     @JoinColumn(name = "SLEEP_ID")

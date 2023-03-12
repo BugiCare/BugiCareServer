@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "Image")
 @Entity
-public class PiCameraImage {
+public class UserImage {
 
     @Id
     private Long id;
@@ -20,6 +20,8 @@ public class PiCameraImage {
     private String mimetype;
 
     private String original_name;
+
+    private String data;
 
     private LocalDateTime createdAt;
 

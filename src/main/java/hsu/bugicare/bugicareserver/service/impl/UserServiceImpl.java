@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,9 +21,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto getUser(Long id) {
+    public UserResponseDto findUser(Long id) {
         User user = userRepository.findById(id).get();
         UserResponseDto userResponseDto = UserResponseDto.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .gender(user.getGender())
                 .address(user.getAddress())
@@ -34,7 +36,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResponseDto> getAllUser() {
-        return null;
+    public List<UserResponseDto> findAllUser() {
+        List<User> userList = userRepository.findAll();
+        List<UserResponseDto> userResponseDtoList = userList.stream()
+                .map(m -> UserResponseDto.builder().build().UsertoUserResponseDto(m))
+                .collect(Collectors.toList());
+
+        return userResponseDtoList;
     }
 }
