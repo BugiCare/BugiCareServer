@@ -26,7 +26,7 @@ public class User {
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private String gender;
+    private Gender gender;
 
     @Column(nullable = false)
     private String address;
@@ -46,7 +46,7 @@ public class User {
     private Door door;
 
     @OneToOne
-    @JoinColumn(name = "IMAGE_ID")
+    @JoinColumn(name = "image_id")
     private UserImage image;
 
     @OneToOne
@@ -59,7 +59,12 @@ public class User {
 
     // id를 직접 만들거면 인자에 id도 추가해야함
     @Builder
-    public User(String name, String gender, String address, int age, String phone) {
+    public User(String name, Gender gender, String address, int age, String phone) {
+        this.name = name;
+        this.gender = gender;
+        this.address = address;
+        this.age = age;
+        this.phone = phone;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }

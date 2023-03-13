@@ -1,6 +1,7 @@
 package hsu.bugicare.bugicareserver.service.impl;
 
 import hsu.bugicare.bugicareserver.domain.User;
+import hsu.bugicare.bugicareserver.dto.UserDto;
 import hsu.bugicare.bugicareserver.dto.UserResponseDto;
 import hsu.bugicare.bugicareserver.repository.UserRepository;
 import hsu.bugicare.bugicareserver.service.UserService;
@@ -43,5 +44,21 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
 
         return userResponseDtoList;
+    }
+
+    @Override
+    public UserResponseDto saveUser(UserDto userDto) {
+        User user = User.builder()
+                .name(userDto.getName())
+                .gender(userDto.getGender())
+                .address(userDto.getAddress())
+                .age(userDto.getAge())
+                .phone(userDto.getPhone())
+                .build();
+
+        System.out.println(user.getGender());
+        System.out.println(user.getAddress());
+        User savedUser = userRepository.save(user);
+        return UserResponseDto.builder().build().UsertoUserResponseDto(savedUser);
     }
 }

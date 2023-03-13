@@ -1,11 +1,11 @@
 package hsu.bugicare.bugicareserver.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @NoArgsConstructor
@@ -19,5 +19,5 @@ public class Sleep {
     private LocalDateTime start_time;
 
     @Temporal(value = TemporalType.TIMESTAMP)
-    private Data timestamp;
+    private Date timestamp;
 }

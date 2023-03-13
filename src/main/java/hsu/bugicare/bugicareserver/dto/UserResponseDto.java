@@ -1,5 +1,6 @@
 package hsu.bugicare.bugicareserver.dto;
 
+import hsu.bugicare.bugicareserver.domain.Gender;
 import hsu.bugicare.bugicareserver.domain.User;
 import lombok.Builder;
 
@@ -7,7 +8,7 @@ import lombok.Builder;
 public class UserResponseDto {
     private Long id;
     private String name;
-    private String gender;
+    private Gender gender;
     private String address;
     private Integer age;
     private String phone;

@@ -1,11 +1,10 @@
 package hsu.bugicare.bugicareserver.controller;
 
+import hsu.bugicare.bugicareserver.dto.UserDto;
 import hsu.bugicare.bugicareserver.dto.UserResponseDto;
 import hsu.bugicare.bugicareserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,12 +19,17 @@ public class UserController {
     }
 
     @GetMapping("/allUser")
-    public List<UserResponseDto> allUser() {
+    public List<UserResponseDto> getAllUser() {
         return userService.findAllUser();
     }
 
     @GetMapping("/user/{id}")
-    public UserResponseDto user(@PathVariable Long id) {
+    public UserResponseDto getUser(@PathVariable Long id) {
         return userService.findUser(id);
+    }
+
+    @PostMapping("/user")
+    public UserResponseDto postUser(@RequestBody UserDto userDto) {
+        return userService.saveUser(userDto);
     }
 }
