@@ -28,7 +28,7 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50000)
     private String address;
 
     @Column(nullable = false)
@@ -38,11 +38,11 @@ public class User {
     private String phone;
 
     @OneToOne
-    @JoinColumn(name = "REFRIGERATOR_ID")
+    @JoinColumn(name = "refrigerator_id")
     private Refrigerator refrigerator;
 
     @OneToOne
-    @JoinColumn(name = "DOOR_ID")
+    @JoinColumn(name = "door_id")
     private Door door;
 
     @OneToOne
@@ -50,12 +50,10 @@ public class User {
     private UserImage image;
 
     @OneToOne
-    @JoinColumn(name = "SLEEP_ID")
+    @JoinColumn(name = "sleep_id")
     private Sleep sleep;
 
-    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private LocalDateTime deletedAt;
 
     // id를 직접 만들거면 인자에 id도 추가해야함
     @Builder
@@ -65,7 +63,6 @@ public class User {
         this.address = address;
         this.age = age;
         this.phone = phone;
-        this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 }

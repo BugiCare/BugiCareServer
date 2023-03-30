@@ -4,6 +4,8 @@ import hsu.bugicare.bugicareserver.dto.UserDto;
 import hsu.bugicare.bugicareserver.dto.UserResponseDto;
 import hsu.bugicare.bugicareserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,12 +26,14 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public UserResponseDto getUser(@PathVariable Long id) {
-        return userService.findUser(id);
+    public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
+        UserResponseDto userResponseDto = userService.findUser(id);
+        return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
     }
 
     @PostMapping("/user")
-    public UserResponseDto postUser(@RequestBody UserDto userDto) {
-        return userService.saveUser(userDto);
+    public ResponseEntity<UserResponseDto> postUser(@RequestBody UserDto userDto) {
+        UserResponseDto userResponseDto = userService.saveUser(userDto);
+        return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
     }
 }

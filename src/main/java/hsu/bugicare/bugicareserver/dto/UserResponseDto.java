@@ -3,7 +3,9 @@ package hsu.bugicare.bugicareserver.dto;
 import hsu.bugicare.bugicareserver.domain.Gender;
 import hsu.bugicare.bugicareserver.domain.User;
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 @Builder
 public class UserResponseDto {
     private Long id;

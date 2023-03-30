@@ -56,8 +56,6 @@ public class UserServiceImpl implements UserService {
                 .phone(userDto.getPhone())
                 .build();
 
-        System.out.println(user.getGender());
-        System.out.println(user.getAddress());
         User savedUser = userRepository.save(user);
         return UserResponseDto.builder().build().UsertoUserResponseDto(savedUser);
     }
