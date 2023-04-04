@@ -18,7 +18,12 @@ public class GraphService {
     }
 
     public String refrigeratorDayCount(){
-        List<Refrigerator> refrigerator = refriRepository.findWithSameMinute();
+        List<Refrigerator> refrigerator = refriRepository.findWithSameDay();
+        return String.valueOf(refrigerator.size());
+    }
+
+    public String refrigeratorWeekCount(){
+        List<Refrigerator> refrigerator = refriRepository.findWithSameWeek();
         return String.valueOf(refrigerator.size());
     }
 

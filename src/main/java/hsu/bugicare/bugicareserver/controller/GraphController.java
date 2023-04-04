@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @RestController
 public class GraphController {
@@ -23,12 +26,12 @@ public class GraphController {
         return graphService.refrigeratorDayCount();
     }
 
-//    // 냉장고 문 열림 횟수(일주일 단위)
-//    @GetMapping("/refriWeekCount")
-//    public String getRefriWeekCount() {
-//        return graphService
-//    }
-//
+    // 냉장고 문 열림 횟수(일주일 단위)
+    @GetMapping("/refrigeratorWeekCount")
+    public String getRefrigeratorWeekCount() {
+        return graphService.refrigeratorWeekCount();
+    }
+
 //    // 냉장고 문 열림 횟수(한 달 단위)
 //    @GetMapping("/refriMonthCount")
 //    public String getRefriMonthCount() {
