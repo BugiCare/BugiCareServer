@@ -53,8 +53,6 @@ public class User {
     @JoinColumn(name = "sleep_id")
     private Sleep sleep;
 
-    private LocalDateTime updatedAt;
-
     // id를 직접 만들거면 인자에 id도 추가해야함
     @Builder
     public User(String name, Gender gender, String address, int age, String phone) {
@@ -63,6 +61,5 @@ public class User {
         this.address = address;
         this.age = age;
         this.phone = phone;
-        this.updatedAt = LocalDateTime.now();
     }
 }

@@ -1,9 +1,12 @@
 package hsu.bugicare.bugicareserver.service.impl;
 
 import hsu.bugicare.bugicareserver.domain.User;
+import hsu.bugicare.bugicareserver.domain.UserImage;
 import hsu.bugicare.bugicareserver.dto.UserDto;
 import hsu.bugicare.bugicareserver.dto.UserResponseDto;
+import hsu.bugicare.bugicareserver.repository.UserImageRepository;
 import hsu.bugicare.bugicareserver.repository.UserRepository;
+import hsu.bugicare.bugicareserver.service.FileHandler;
 import hsu.bugicare.bugicareserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +18,16 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserImageRepository userImageRepository;
+    private final FileHandler fileHandler;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository,
+                           UserImageRepository userImageRepository,
+                           FileHandler fileHandler) {
         this.userRepository = userRepository;
+        this.userImageRepository = userImageRepository;
+        this.fileHandler = fileHandler;
     }
 
     @Override
@@ -47,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto saveUser(UserDto userDto) {
+    public UserResponseDto saveUser(UserDto userDto) throws Exception {
         User user = User.builder()
                 .name(userDto.getName())
                 .gender(userDto.getGender())
@@ -56,7 +65,11 @@ public class UserServiceImpl implements UserService {
                 .phone(userDto.getPhone())
                 .build();
 
+        UserImage userImage = fileHandler.parseFileInfo(userDto.getImage());
+
         User savedUser = userRepository.save(user);
+        userImageRepository.save(userImage);
+
         return UserResponseDto.builder().build().UsertoUserResponseDto(savedUser);
     }
 }

@@ -8,5 +8,5 @@ import java.util.List;
 public interface UserService {
     UserResponseDto findUser(Long id);
     List<UserResponseDto> findAllUser();
-    UserResponseDto saveUser(UserDto userDto);
+    UserResponseDto saveUser(UserDto userDto) throws Exception;
 }
