@@ -19,9 +19,9 @@ public class InfoFromRaspi {
 
         // Socket이 보낸 문자열
         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        String inputLine = null;
-        while ((inputLine = in.readLine()) != null) {
-            System.out.println("socket으로부터 받은 메시지 : " + inputLine);
+        String receivedText = null;
+        while ((receivedText = in.readLine()) != null) {
+            System.out.println("socket으로부터 받은 메시지 : " + receivedText);
         }
         in.close();
 

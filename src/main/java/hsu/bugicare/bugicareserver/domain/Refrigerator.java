@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Getter
@@ -12,11 +13,12 @@ import java.util.Date;
 @Entity
 public class Refrigerator {
 
-    @Id
+    @Id@ GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private int count;
+    @Column(nullable = false)
+    private String status;
 
     @Temporal(value = TemporalType.TIMESTAMP)
-    private Date timestamp;
+    private Date time;
 }
