@@ -70,7 +70,7 @@ public class FurnitureGraphService {
                 // num 분 미만일 경우 -N분이 되지 않도록 처리 && 시(Hour) 변경
                 else {
                     // 12시일 경우 일/시 모두 변경
-                    if(nowHour == 12) {
+                    if(nowHour == 0) {
                         refrigerator = refriRepository.findWeekOrMonthChangeDay(60 + nowMinute - i);
                     }
                     // 아닌 경우 시(Hour)만 변경

@@ -37,10 +37,9 @@ public interface DoorRepository extends JpaRepository<Door, Long>{
     List<Door> findWeekOrMonthUnder(@Param("num") int num);
 
 
-    // 아직 테스트는 못해봄
     // DB에 저장되어 있는 값들 중 현재 시간과 비교하여 이전 일, 이전 시, 현재 - num 분 전의 레코드만 가져오기
-    @Query("SELECT w FROM Door w WHERE DATE(w.time) = CURRENT_DATE - 1" +
-            "AND EXTRACT(HOUR FROM w.time) = EXTRACT(HOUR FROM CURRENT_TIMESTAMP) - 1 " +
+    @Query("SELECT w FROM Door w WHERE EXTRACT(DATE FROM w.time) = EXTRACT(DATE FROM CURRENT_TIMESTAMP) - 1 " +
+            "AND EXTRACT(HOUR FROM w.time) = 23" +
             "AND EXTRACT(MINUTE FROM w.time) = :num")
     List<Door> findWeekOrMonthChangeDay(@Param("num") int num);
 }
