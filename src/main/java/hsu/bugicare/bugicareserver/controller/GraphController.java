@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class GraphController {
 
@@ -19,20 +21,38 @@ public class GraphController {
         this.userStatusGraphService = userStatusGraphService;
     }
 
-    // 가구 문 열림 횟수(하루, 일주일, 한 달 단위)
-    // date 값 = day ,week, month
+
+    /* 가구 문 열림 횟수(하루, 일주일, 한 달 단위) */
+
     // furniture 값 = refrigerator, door
-    @GetMapping("/count/{date}/{furniture}")
-    public String getCount(@PathVariable String date, @PathVariable String furniture) {
-        return furnitureGraphService.getCount(date, furniture);
+    // 하루동안의 문 열림 횟수, 60초를 시간대별로 나누기 애매해서 하루에 몇 번 열었는지 String 값으로만 반환. 배열 X
+    @GetMapping("/countDay/{furniture}")
+    public String getDayCount( @PathVariable String furniture) {
+        return furnitureGraphService.getDayCount(furniture);
     }
 
-    // 어르신 상태
-    // date 값 = day ,week, month
+    // date 값 = week, month
+    // furniture 값 = refrigerator, door
+    // 일주일 or 한 달 동안의 문 열림 횟수
+    @GetMapping("/countWeekOrMonth/{date}/{furniture}")
+    public List<String> getWeekOrMonthCount(@PathVariable String date, @PathVariable String furniture) {
+        return furnitureGraphService.getWeekOrMonthCount(date, furniture);
+    }
+
+
+    /* 어르신 상태 */
+
     // status 값 = sleep, active
-    @GetMapping("/time/{date}/{status}")
-    public String getTime(@PathVariable String date, @PathVariable String status) {
-        return userStatusGraphService.getTime(date, status);
+    @GetMapping("/timeDay/{status}")
+    public String getTime( @PathVariable String status) {
+        return userStatusGraphService.getDayTime(status);
+    }
+
+    // date 값 = week, month
+    // status 값 = sleep, active
+    @GetMapping("/timeWeekOrMonth/{date}/{status}")
+    public List<String> getTime(@PathVariable String date, @PathVariable String status) {
+        return userStatusGraphService.getWeekOrMonthTime(date, status);
     }
 
 }
