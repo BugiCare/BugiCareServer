@@ -28,9 +28,4 @@ public class InfoFromRaspi {
         clientSocket.close();
         serverSocket.close();
     }
-
-    public static void main(String[] args) throws IOException {
-        InfoFromRaspi server = new InfoFromRaspi();
-        server.start();
-    }
 }
