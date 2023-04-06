@@ -14,7 +14,7 @@ import java.util.Date;
 @Entity
 public class Refrigerator {
 
-    @Id@ GeneratedValue(strategy = GenerationType.AUTO)
+    @Id@ GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)

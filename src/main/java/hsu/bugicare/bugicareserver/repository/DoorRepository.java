@@ -42,4 +42,5 @@ public interface DoorRepository extends JpaRepository<Door, Long>{
             "AND EXTRACT(HOUR FROM w.time) = 23" +
             "AND EXTRACT(MINUTE FROM w.time) = :num")
     List<Door> findWeekOrMonthChangeDay(@Param("num") int num);
+
 }

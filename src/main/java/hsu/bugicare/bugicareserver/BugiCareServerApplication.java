@@ -10,16 +10,16 @@ import java.io.IOException;
 @SpringBootApplication
 public class BugiCareServerApplication {
 
-    private final InfoFromRaspi server;
+    private static InfoFromRaspi server = null;
 
     @Autowired
     public BugiCareServerApplication(InfoFromRaspi server) throws IOException {
-        this.server = server;
-        server.start();
+        BugiCareServerApplication.server = server;
     }
 
     public static void main(String[] args) throws IOException {
         SpringApplication.run(BugiCareServerApplication.class, args);
+        server.start();
     }
 
 }
