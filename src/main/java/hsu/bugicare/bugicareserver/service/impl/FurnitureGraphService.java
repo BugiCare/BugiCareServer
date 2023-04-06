@@ -114,4 +114,20 @@ public class FurnitureGraphService {
         // NULL
         return result;
     }
+
+    public void saveDoor() {
+        Door door = Door.builder()
+                .status("openDoor")
+                .build();
+
+        doorRepository.save(door);
+    }
+
+    public void saveRefrigerator() {
+        Refrigerator refrigerator = Refrigerator.builder()
+                .status("openRefrigerator")
+                .build();
+
+        refriRepository.save(refrigerator);
+    }
 }

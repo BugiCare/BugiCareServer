@@ -1,6 +1,7 @@
 package hsu.bugicare.bugicareserver.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,4 +22,10 @@ public class Refrigerator {
 
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date time;
+
+    @Builder
+    public Refrigerator(String status) {
+        this.status = status;
+        time = new Date();
+    }
 }
