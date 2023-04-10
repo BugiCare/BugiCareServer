@@ -1,7 +1,6 @@
 package hsu.bugicare.bugicareserver.repository;
 
 import hsu.bugicare.bugicareserver.domain.Door;
-import hsu.bugicare.bugicareserver.domain.Refrigerator;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,19 +10,20 @@ import java.util.List;
 
 @Repository
 public interface DoorRepository extends JpaRepository<Door, Long>{
-
     /**
      * 하루 = 2분
      * 일주일 = 14분
      * 한 달 = 56분
      */
 
-    // DB에 저장되어 있는 값들 중 현재 시간과 비교하여 같은 일, 같은 시, 같은 분의 레코드들만 가져오기
-    // 초단위로 수정 예정
-    @Query("SELECT d FROM Door d WHERE DATE(d.time) = CURRENT_DATE AND HOUR(d.time) = HOUR(CURRENT_TIMESTAMP) AND MINUTE(d.time) = MINUTE(CURRENT_TIMESTAMP)")
-    List<Door> findDay();
+    // DB에 저장되어 있는 값들 중 현재 시간과 비교하여 같은 일, 같은 시, 같은 분, beforeNum ~ afterNum 초 사이의 값 가져오기
+    @Query("SELECT w FROM Door w WHERE DATE(w.time) = CURRENT_DATE " +
+            "AND EXTRACT(HOUR FROM w.time) = EXTRACT(HOUR FROM CURRENT_TIMESTAMP)" +
+            "AND EXTRACT(MINUTE FROM w.time) = EXTRACT(MINUTE FROM CURRENT_TIMESTAMP) + :minus " +
+            "AND EXTRACT(SECOND FROM w.time) BETWEEN EXTRACT(SECOND FROM :beforeNum) AND EXTRACT(SECOND FROM :afterNum)")
+    List<Door> findDay(@Param("beforeNum") int beforeNum, @Param("afterNum") int afterNum, @Param("minus") int minus);
 
-    // DB에 저장되어 있는 값들 중 현재 시간과 비교하여 같은 일, 이전 시, num 분의 레코드만 가져오기
+    // DB에 저장되어 있는 값들 중 현재 시간과 비교하여 같은 일, 설정한 시, num 분의 레코드만 가져오기
     @Query("SELECT w FROM Door w WHERE DATE(w.time) = CURRENT_DATE " +
             "AND EXTRACT(HOUR FROM w.time) = EXTRACT(HOUR FROM CURRENT_TIMESTAMP) + :minus " +
             "AND EXTRACT(MINUTE FROM w.time) = :num")

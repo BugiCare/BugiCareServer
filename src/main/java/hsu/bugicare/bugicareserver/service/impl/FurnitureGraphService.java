@@ -24,6 +24,8 @@ public class FurnitureGraphService {
 
     private int dateNum;
 
+    private int n, m;
+
     @Autowired
     public FurnitureGraphService(RefrigeratorRepository refriRepository, DoorRepository doorRepository) {
         this.refriRepository = refriRepository;
@@ -49,23 +51,59 @@ public class FurnitureGraphService {
 
         // 주, 월, 일 구분 변수, 하루 = 6, 일주일 = 7, 한 달 = 28 개의 배열 생성
         if(date.equals("day")) {
-            dateNum = 12;
+            dateNum = 6;
+            n = nowSecond / 5;
             // 하루(현재부터 6시간 전까지만)의 냉장고 문 열림 횟수
             // 초단위로 구현 예정
+            // 하루 = 120초, 1시간 = 5초, 6시간 = 30초
+            if(furniture.equals("refrigerator")){
 
-            /**
-             *
-             */
+                // 하루(현재부터 6시간 전까지만)의 배열이 생성
+                for(int i = 0; i < dateNum; i++) {
+                    m = (n*5 - i*5 < 0) ? (60 + n*5 - i*5)  : (n*5 - i*5);
 
+                    if(i == 0){
+                        refrigerator = refriRepository.findDay(m, nowSecond, 0);
+                    }
+                    if(n*5 - i*5 < 0) {
+                        refrigerator = refriRepository.findDay(m, m + 4, -1);
+                    }
+                    else{
+                        refrigerator = refriRepository.findDay(m, m + 4, 0);
+                    }
+                    result.add(String.valueOf(refrigerator.size()));
+                }
+                // 배열 반환
+                return result;
+            }
+            // 하루(현재부터 6시간 전까지만)의 현관문 열림 횟수
+            else if(furniture.equals("door")){
+                // 하루(현재부터 6시간 전까지만)의 배열이 생성
+                for(int i = 0; i < dateNum; i++) {
+                    m = (n*5 - i*5 < 0) ? (60 + n*5 - i*5)  : (n*5 - i*5);
+
+                    if(i == 0){
+                        door = doorRepository.findDay(m, nowSecond, 0);
+                    }
+                    if(n*5 - i*5 < 0) {
+                        door = doorRepository.findDay(m, m + 4, -1);
+                    }
+                    else{
+                        door = doorRepository.findDay(m, m + 4, 0);
+                    }
+                    result.add(String.valueOf(door.size()));
+                }
+                // 배열 반환
+                return result;
+            }
         }
         else {
-            dateNum = (date.equals("week") ? 14 : 56);
+            dateNum = (date.equals("week") ? 7 : 28);
 
             // 일주일 or 한 달 동안의 냉장고 문 열림 횟수
             if(furniture.equals("refrigerator")){
-
                 // 주 or 월 이냐에 따라서 배열이 생성
-                for(int i = 1; i <= dateNum; i++) {
+                for(int i = 1; i <= (dateNum * 2); i++) {
                     // NN시 1분 이상일 경우
                     if(nowMinute - i >= 0) {
                         refrigerator = refriRepository.findWeekOrMonth(nowMinute - i + 1, 0);
@@ -100,7 +138,6 @@ public class FurnitureGraphService {
             }
             // 일주일 or 한 달 동안의 현관문 열림 횟수
             else if(furniture.equals("door")){
-
                 // 주 or 월 이냐에 따라서 배열이 생성
                 for(int i = 1; i <= dateNum; i++) {
                     // NN시 1분 이상일 경우
@@ -136,7 +173,7 @@ public class FurnitureGraphService {
                 return result;
             }
         }
-        // NULL --> Refrigerator or Door가 아닐 경우
+        // NULL --> day, week, month 아닐 경우
         return result;
     }
 
