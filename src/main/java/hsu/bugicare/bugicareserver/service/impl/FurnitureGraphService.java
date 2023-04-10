@@ -75,9 +75,6 @@ public class FurnitureGraphService {
                     result.add(String.valueOf(refrigerator.size()));
                 }
 
-                // 배열 거꾸로
-                Collections.reverse(result);
-
                 // 배열 반환
                 return result;
             }
@@ -98,9 +95,6 @@ public class FurnitureGraphService {
                     }
                     result.add(String.valueOf(door.size()));
                 }
-                // 배열 거꾸로
-                Collections.reverse(result);
-
                 // 배열 반환
                 return result;
             }
@@ -141,9 +135,6 @@ public class FurnitureGraphService {
                         s = 0;
                     }
                 }
-                // 배열 거꾸로
-                Collections.reverse(result);
-
                 // 배열 반환
                 return result;
             }
@@ -180,9 +171,6 @@ public class FurnitureGraphService {
                         s = 0;
                     }
                 }
-                // 배열 거꾸로
-                Collections.reverse(result);
-
                 // 배열 반환
                 return result;
             }
