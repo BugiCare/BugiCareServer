@@ -3,13 +3,13 @@ package hsu.bugicare.bugicareserver.controller;
 import hsu.bugicare.bugicareserver.service.impl.FurnitureGraphService;
 import hsu.bugicare.bugicareserver.service.impl.UserStatusGraphService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class GraphController {
 
     private final FurnitureGraphService furnitureGraphService;
