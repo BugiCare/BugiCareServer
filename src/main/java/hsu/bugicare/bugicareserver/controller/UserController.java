@@ -45,8 +45,8 @@ public class UserController {
         return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(imageResource);
     }
 
-    @GetMapping(value = "/pageUser/{page}/{n}")
-    public List<UserResponseDto> getPageUser(@PathVariable int page, @PathVariable int offset) {
+    @GetMapping(value = "/pageUser")
+    public List<UserResponseDto> getPageUser(@RequestParam int page, @RequestParam int offset) {
         return userService.findPageUser(page, offset);
     }
 }

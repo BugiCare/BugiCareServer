@@ -26,7 +26,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto findUser(Long id) {
         User user = userRepository.findById(id).get();
-        UserResponseDto userResponseDto = UserResponseDto.builder()
+
+        return UserResponseDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .gender(user.getGender())
@@ -34,14 +35,13 @@ public class UserServiceImpl implements UserService {
                 .age(user.getAge())
                 .phone(user.getPhone())
                 .build();
-
-        return userResponseDto;
     }
 
     @Override
     public List<UserResponseDto> findAllUser() {
         List<User> userList = userRepository.findAll();
-        List<UserResponseDto> userResponseDtoList = userList.stream()
+
+        return userList.stream()
                 .map(m -> {
                     try {
                         return UserResponseDto.builder().build().UsertoUserResponseDto(m);
@@ -50,8 +50,6 @@ public class UserServiceImpl implements UserService {
                     }
                 })
                 .collect(Collectors.toList());
-
-        return userResponseDtoList;
     }
 
     public List<UserResponseDto> findPageUser(int page, int offset) {
