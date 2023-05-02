@@ -3,7 +3,6 @@ package hsu.bugicare.bugicareserver.controller;
 import hsu.bugicare.bugicareserver.service.impl.FurnitureGraphService;
 import hsu.bugicare.bugicareserver.service.impl.UserStatusGraphService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,8 +32,7 @@ public class GraphController {
 
     /* 어르신 상태 */
     // date 값 = day, week, month
-    // status 값 = sleep, active
-    @GetMapping("/time/{date}/{status}")
+    @GetMapping("/sleepTime/{date}")
     public List<String> getTime(@PathVariable String date, @PathVariable String status) {
         return userStatusGraphService.getWeekOrMonthTime(date, status);
 //        return userStatusGraphService.getCount(date, furniture);

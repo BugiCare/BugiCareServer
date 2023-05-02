@@ -4,13 +4,13 @@ import hsu.bugicare.bugicareserver.domain.User;
 import hsu.bugicare.bugicareserver.domain.UserImage;
 import hsu.bugicare.bugicareserver.dto.UserDto;
 import hsu.bugicare.bugicareserver.dto.UserResponseDto;
-import hsu.bugicare.bugicareserver.repository.UserImageRepository;
 import hsu.bugicare.bugicareserver.repository.UserRepository;
 import hsu.bugicare.bugicareserver.service.FileHandler;
 import hsu.bugicare.bugicareserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,15 +18,12 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserImageRepository userImageRepository;
     private final FileHandler fileHandler;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
-                           UserImageRepository userImageRepository,
                            FileHandler fileHandler) {
         this.userRepository = userRepository;
-        this.userImageRepository = userImageRepository;
         this.fileHandler = fileHandler;
     }
 
@@ -49,7 +46,13 @@ public class UserServiceImpl implements UserService {
     public List<UserResponseDto> findAllUser() {
         List<User> userList = userRepository.findAll();
         List<UserResponseDto> userResponseDtoList = userList.stream()
-                .map(m -> UserResponseDto.builder().build().UsertoUserResponseDto(m))
+                .map(m -> {
+                    try {
+                        return UserResponseDto.builder().build().UsertoUserResponseDto(m);
+                    } catch (MalformedURLException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
 
         return userResponseDtoList;
@@ -65,10 +68,7 @@ public class UserServiceImpl implements UserService {
                 .phone(userDto.getPhone())
                 .build();
 
-        UserImage userImage = fileHandler.parseFileInfo(userDto.getImage());
-
         User savedUser = userRepository.save(user);
-        userImageRepository.save(userImage);
 
         return UserResponseDto.builder().build().UsertoUserResponseDto(savedUser);
     }
