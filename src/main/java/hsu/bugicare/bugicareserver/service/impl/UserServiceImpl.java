@@ -1,16 +1,15 @@
 package hsu.bugicare.bugicareserver.service.impl;
 
 import hsu.bugicare.bugicareserver.domain.User;
-import hsu.bugicare.bugicareserver.domain.UserImage;
 import hsu.bugicare.bugicareserver.dto.UserDto;
 import hsu.bugicare.bugicareserver.dto.UserResponseDto;
 import hsu.bugicare.bugicareserver.repository.UserRepository;
-import hsu.bugicare.bugicareserver.service.FileHandler;
 import hsu.bugicare.bugicareserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,13 +17,10 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final FileHandler fileHandler;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository,
-                           FileHandler fileHandler) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.fileHandler = fileHandler;
     }
 
     @Override
@@ -54,6 +50,23 @@ public class UserServiceImpl implements UserService {
                     }
                 })
                 .collect(Collectors.toList());
+
+        return userResponseDtoList;
+    }
+
+    public List<UserResponseDto> findPageUser(int page, int offset) {
+        List<User> allUser = userRepository.findAll();
+        List<User> pageUser = new ArrayList<>();
+        for(int i = (page - 1) * offset; i < ((page - 1) * offset) + offset && i < allUser.size(); i++) {
+            pageUser.add(allUser.get(i));
+        }
+        List<UserResponseDto> userResponseDtoList = pageUser.stream().map(m -> {
+            try {
+                return UserResponseDto.builder().build().UsertoUserResponseDto(m);
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        }).collect(Collectors.toList());
 
         return userResponseDtoList;
     }

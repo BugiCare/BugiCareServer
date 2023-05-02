@@ -8,5 +8,6 @@ import java.util.List;
 public interface UserService {
     UserResponseDto findUser(Long id);
     List<UserResponseDto> findAllUser();
+    List<UserResponseDto> findPageUser(int page, int offset);
     UserResponseDto saveUser(UserDto userDto) throws Exception;
 }
