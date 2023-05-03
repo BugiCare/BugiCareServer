@@ -21,7 +21,7 @@ public class UserController {
 
     private final UserService userService;
 
-    private static final String IMAGES_PATH = "src/main/resources/images";
+    private static final String IMAGES_PATH = "../../src/main/resources/images";
 
     @Autowired
     public UserController(UserService userService) {
