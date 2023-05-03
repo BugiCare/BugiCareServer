@@ -1,6 +1,7 @@
 package hsu.bugicare.bugicareserver.service.impl;
 
 import hsu.bugicare.bugicareserver.domain.Manager;
+import hsu.bugicare.bugicareserver.domain.User;
 import hsu.bugicare.bugicareserver.dto.ManagerResponseDto;
 import hsu.bugicare.bugicareserver.dto.UserResponseDto;
 import hsu.bugicare.bugicareserver.repository.ManagerRepository;
@@ -51,6 +52,19 @@ public class ManagerServiceImpl implements ManagerService {
                 .collect(Collectors.toList());
     }
 
-
+    @Override
+    public List<UserResponseDto> findMyUser(Long id) {
+        Manager manager = managerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id = " + id));
+        List<User> list = manager.getUsers();
+        return list.stream()
+                .map(m -> {
+                    try {
+                        return UserResponseDto.builder().build().UsertoUserResponseDto(m);
+                    } catch (MalformedURLException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
+    }
 
 }

@@ -6,10 +6,7 @@ import hsu.bugicare.bugicareserver.service.ManagerService;
 import hsu.bugicare.bugicareserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +29,9 @@ public class ManagerController {
         System.out.println(id);
         ManagerResponseDto managerResponseDto = managerService.findManager(id);
         return ResponseEntity.ok().body(managerResponseDto);
+    }
+    @GetMapping("/myUser")
+    public List<UserResponseDto> getMyUser(@RequestParam Long id) {
+        return managerService.findMyUser(id);
     }
 }
