@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto findUser(Long id) {
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id = " + id));
 
         return UserResponseDto.builder()
                 .id(user.getId())
