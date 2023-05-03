@@ -32,6 +32,8 @@ public class Manager {
 
     @Builder
     public Manager(String name, String center_name, String phone) {
-
+        this.name = name;
+        this.center_name = center_name;
+        this.phone = phone;
     }
 }
