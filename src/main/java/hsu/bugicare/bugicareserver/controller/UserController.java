@@ -16,6 +16,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class UserController {
 
     private final UserService userService;
@@ -34,8 +35,9 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
+        System.out.println(id);
         UserResponseDto userResponseDto = userService.findUser(id);
-        return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
+        return ResponseEntity.ok().body(userResponseDto);
     }
 
     @GetMapping(value = "/userImage/{id}", produces = MediaType.IMAGE_PNG_VALUE)
