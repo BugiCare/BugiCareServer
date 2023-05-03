@@ -26,9 +26,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto findUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id = " + id));
-        System.out.println("*************************");
-        System.out.println(user);
-        System.out.println("*************************");
 
         return UserResponseDto.builder()
                 .id(user.getId())
@@ -37,6 +34,7 @@ public class UserServiceImpl implements UserService {
                 .address(user.getAddress())
                 .age(user.getAge())
                 .phone(user.getPhone())
+                .manager_id(user.getManager().getId())
                 .build();
     }
 

@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 @Builder
 public class UserResponseDto {
     private Long id;
+    private Long manager_id;
     private String name;
     private Gender gender;
     private String address;
@@ -27,6 +28,7 @@ public class UserResponseDto {
 
     public UserResponseDto UsertoUserResponseDto(User user) throws MalformedURLException {
         this.id = user.getId();
+        this.manager_id = user.getManager().getId();
         this.name = user.getName();
         this.gender = user.getGender();
         this.address = user.getAddress();

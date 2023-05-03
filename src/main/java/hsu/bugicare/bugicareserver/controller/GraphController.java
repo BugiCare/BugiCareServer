@@ -3,9 +3,7 @@ package hsu.bugicare.bugicareserver.controller;
 import hsu.bugicare.bugicareserver.service.impl.FurnitureGraphService;
 import hsu.bugicare.bugicareserver.service.impl.UserStatusGraphService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,5 +34,10 @@ public class GraphController {
     public List<String> getTime(@PathVariable String date, @PathVariable String status) {
         return userStatusGraphService.getWeekOrMonthTime(date, status);
 //        return userStatusGraphService.getCount(date, furniture);
+    }
+
+    @PostMapping("/result")
+    public void postResult(@RequestBody String result) {
+        System.out.println(result);
     }
 }
