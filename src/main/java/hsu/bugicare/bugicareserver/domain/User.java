@@ -46,10 +46,6 @@ public class User {
     private Door door;
 
     @OneToOne
-    @JoinColumn(name = "image_id")
-    private UserImage image;
-
-    @OneToOne
     @JoinColumn(name = "sleep_id")
     private Sleep sleep;
     
