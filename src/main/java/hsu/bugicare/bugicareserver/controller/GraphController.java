@@ -14,6 +14,9 @@ public class GraphController {
     private final FurnitureGraphService furnitureGraphService;
     private final UserStatusGraphService userStatusGraphService;
 
+    private String oldRefrigeratorStatus = "closeRefrigerator";
+    private String oldDoorStatus = "closeDoor";
+
     @Autowired
     public GraphController(FurnitureGraphService furnitureGraphService, UserStatusGraphService userStatusGraphService) {
         this.furnitureGraphService = furnitureGraphService;
@@ -41,5 +44,25 @@ public class GraphController {
     public void postResult(@RequestBody Map<String, Object> data) {
         String result = (String) data.get("result");
         System.out.println(result);
+
+        // Refrigerator
+        if(result.contains("openRefrigerator")) {
+            if(oldRefrigeratorStatus.equals("closeRefrigerator")) {
+                furnitureGraphService.saveRefrigerator();
+            }
+            oldRefrigeratorStatus = "openRefrigerator";
+        } else if (result.contains("closeRefrigerator")) {
+            oldRefrigeratorStatus = "closeRefrigerator";
+        }
+
+        // Door
+        if (result.contains("openDoor")) {
+            if (oldRefrigeratorStatus.equals("closeDoor")) {
+                furnitureGraphService.saveDoor();
+            }
+            oldRefrigeratorStatus = "openDoor";
+        } else if (result.contains("closeDoor")) {
+            oldRefrigeratorStatus = "closeDoor";
+        }
     }
 }
