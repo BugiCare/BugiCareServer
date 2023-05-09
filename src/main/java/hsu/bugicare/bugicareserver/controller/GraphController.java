@@ -40,8 +40,7 @@ public class GraphController {
     }
 
     @PostMapping("/result")
-    public void postResult(@RequestBody Map<String, Object> data) {
-        String result = (String) data.get("result");
+    public void postResult(@RequestBody String result) {
         System.out.println(result);
 
         // Refrigerator
