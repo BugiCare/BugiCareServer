@@ -12,7 +12,7 @@ import java.io.FileInputStream;
 @Configuration
 public class FirebaseConfig {
 
-    private static final String FIREBASE_CONFIG_PATH = "src/main/resources/key/bugicareserver-springboot-firebase-adminsdk-zws1k-a1c5042fae.json";
+    private static final String FIREBASE_CONFIG_PATH = "../../src/main/resources/key/bugicareserver-springboot-firebase-adminsdk-zws1k-a1c5042fae.json";
 
     @PostConstruct
     public void initFirebase() throws Exception {
