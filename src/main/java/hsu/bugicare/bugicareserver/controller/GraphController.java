@@ -32,12 +32,11 @@ public class GraphController {
         return furnitureGraphService.getCount(date, furniture);
     }
 
-    /* 어르신 상태 */
+    /* 어르신 취침 시간 */
     // date 값 = day, week, month
     @GetMapping("/sleepTime/{date}")
-    public List<String> getTime(@PathVariable String date, @PathVariable String status) {
-        return userStatusGraphService.getWeekOrMonthTime(date, status);
-//        return userStatusGraphService.getCount(date, furniture);
+    public List<String> getTime(@PathVariable String date) {
+        return userStatusGraphService.getCount(date);
     }
 
     @PostMapping("/result")

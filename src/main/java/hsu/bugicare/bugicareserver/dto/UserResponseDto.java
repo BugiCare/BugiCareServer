@@ -22,10 +22,6 @@ public class UserResponseDto {
     private Integer age;
     private String phone;
 
-//    private Resource imageResource;
-//
-//    private static final String IMAGES_PATH = "src/main/resources/static/";
-
     public UserResponseDto UsertoUserResponseDto(User user) throws MalformedURLException {
         this.id = user.getId();
         this.manager_id = user.getManager().getId();
@@ -34,12 +30,6 @@ public class UserResponseDto {
         this.address = user.getAddress();
         this.age = user.getAge();
         this.phone = user.getPhone();
-
-//        String imgPath = "user" + this.id + ".png";
-//        Path imagePath = Paths.get(IMAGES_PATH, imgPath);
-//
-//        System.out.println(imgPath);
-//        this.imageResource = new UrlResource(imagePath.toUri());
 
         return this;
     }

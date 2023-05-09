@@ -35,7 +35,6 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
-        System.out.println(id);
         UserResponseDto userResponseDto = userService.findUser(id);
         return ResponseEntity.ok().body(userResponseDto);
     }

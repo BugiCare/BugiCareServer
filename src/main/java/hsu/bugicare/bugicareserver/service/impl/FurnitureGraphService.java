@@ -34,7 +34,7 @@ public class FurnitureGraphService {
 
     // date 값 = day, week, month
     // furniture 값 = refrigerator, door
-    // 일주일 or 한 달 동안의 문 열림 횟수
+    // 하루 or 일주일 or 한 달 동안의 문 열림 횟수
     public List<String> getCount(String date, String furniture) {
 
         List<Refrigerator> refrigerator = null;
