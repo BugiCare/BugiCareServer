@@ -19,6 +19,7 @@ bin/
 
 ### IntelliJ IDEA ###
 application-aws.properties
+key/bugicareserver-springboot-firebase-adminsdk-zws1k-a1c5042fae.json
 .idea
 *.iws
 *.iml
