@@ -21,20 +21,17 @@ public class UserStatusGraphService {
 
     private int dateNum;
 
-    private int n, m;
-
     @Autowired
     public UserStatusGraphService(UserStatusRepository userStatusRepository) {
         this.userStatusRepository = userStatusRepository;
     }
 
-
     // date 값 = day, week, month
     // 하루 or 일주일 or 한 달 동안의 어르신 취침시간
     public List<String> getCount(String date) {
-        List<Sleep> sleep = null;
+        List<Sleep> sleep = new ArrayList<>();
 
-        // 반환할 String 배열, dayCount는 6개의 인자를, weekCount는 7개의 인자를, monthCount는 28개의 인자를 가진 String 배열이다.
+        // 반환할 String 배열, dayCount는 1개의 인자를, weekCount는 7개의 인자를, monthCount는 28개의 인자를 가진 String 배열이다.
         List<String> result = new ArrayList<>();
         int s = 0;
 
@@ -43,34 +40,16 @@ public class UserStatusGraphService {
         nowMinute = LocalTime.now().getMinute();
         nowHour = LocalTime.now().getHour();
 
-        // dateNum = 주, 월, 일 구분 변수, 하루 = 6, 일주일 = 7, 한 달 = 28 개의 배열 생성
+        // dateNum = 주, 월 구분 변수, 일주일 = 7, 한 달 = 28 개의 배열 생성
         // 1시간 = 5초, 6시간 = 30초, 하루 = 120초
 
-        // 하루(현재부터 6시간 전까지만)의 냉장고 문 열림 횟수
+        // 현재(1시간 내)의 어르신 수면 여부. 1이면 취침 0이면 활동 중
         if(date.equals("day")) {
-            result = null; // 이전 값 초기화
 
-            dateNum = 6;
-            n = nowSecond / 5;
+            sleep = userStatusRepository.findDay();
+            result.add(String.valueOf(sleep.size() != 0 ? 1 : 0));
 
-            // 하루(현재부터 6시간 전까지만)의 배열이 생성
-            for(int i = 0; i < dateNum; i++) {
-                m = (n*5 - i*5 < 0) ? (60 + n*5 - i*5)  : (n*5 - i*5);
-
-                if(i == 0){
-                    sleep = userStatusRepository.findDay(m, nowSecond, 0);
-                }
-                if(n*5 - i*5 < 0) {
-                    sleep = userStatusRepository.findDay(m, m + 4, -1);
-                }
-                else{
-                    sleep = userStatusRepository.findDay(m, m + 4, 0);
-                }
-                // sleep에 하나라도 들어있으면 주무시는 것이므로 1 전송 아니면 0
-                result.add(String.valueOf(sleep.size() != 0 ? 1 : 0));
-            }
-
-            // 배열 반환
+            // 배열 반환 (값이 하나밖에 없지만 API 반환값 통일성을 위해)
             return result;
         }
         else {
