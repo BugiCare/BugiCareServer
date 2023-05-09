@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.util.Date;
 
 @Getter
@@ -19,12 +18,13 @@ public class Door {
     @Column(nullable = false)
     private String status;
 
-    @Temporal(value = TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(columnDefinition = "DATETIME")
     private Date time;
 
     @Builder
     public Door(String status) {
         this.status = status;
-        this.time = new Date();
+        time = new Date();
     }
 }

@@ -1,10 +1,10 @@
 package hsu.bugicare.bugicareserver.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -13,11 +13,19 @@ import java.util.Date;
 @Entity
 public class Sleep {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime start_time;
+    @Column(nullable = false)
+    private String status;
 
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date timestamp;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(columnDefinition = "DATETIME")
+    private Date time;
+
+    @Builder
+    public Sleep(String status) {
+        this.status = status;
+        time = new Date();
+    }
 }
