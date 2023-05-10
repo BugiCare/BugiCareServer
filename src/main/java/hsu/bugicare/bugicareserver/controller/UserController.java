@@ -1,11 +1,11 @@
 package hsu.bugicare.bugicareserver.controller;
 
 import hsu.bugicare.bugicareserver.dto.UserResponseDto;
+import hsu.bugicare.bugicareserver.service.FCMService;
 import hsu.bugicare.bugicareserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +20,14 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final FCMService fcmService;
 
     private static final String IMAGES_PATH = "../../src/main/resources/images";
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, FCMService fcmService) {
         this.userService = userService;
+        this.fcmService = fcmService;
     }
 
     @GetMapping("/allUser")
@@ -49,5 +51,10 @@ public class UserController {
     @GetMapping(value = "/pageUser")
     public List<UserResponseDto> getPageUser(@RequestParam int page, @RequestParam int offset) {
         return userService.findPageUser(page, offset);
+    }
+
+    @GetMapping(value = "/alarm")
+    public void pushArarm() throws Exception {
+        fcmService.sendPushNotification("token");
     }
 }
