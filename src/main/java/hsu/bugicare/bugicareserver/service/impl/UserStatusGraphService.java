@@ -17,9 +17,11 @@ public class UserStatusGraphService {
     private int nowMinute;
     private int nowHour;
 
-    private final int minusNum = -1;
+    private int mMinus;
 
     private int dateNum;
+
+    private int n, m;
 
     @Autowired
     public UserStatusGraphService(UserStatusRepository userStatusRepository) {
@@ -54,34 +56,49 @@ public class UserStatusGraphService {
         }
         else {
             dateNum = (date.equals("week") ? 7 : 28);
+            n = nowSecond / 5;
+            mMinus = 0;
+
+            System.out.println("nowHour : " + nowHour);
+            System.out.println("nowMinute : " + nowMinute);
+            System.out.println("nowSecond : " + nowSecond);
+            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++");
 
             // 주 or 월 이냐에 따라서 배열이 생성
-            for(int i = 1; i <= (dateNum * 2); i++) {
-                // NN시 1분 이상일 경우
-                if(nowMinute - i >= 0) {
-                    sleep = userStatusRepository.findWeekOrMonth(nowMinute - i + 1, 0);
+            for(int i = 0; i <= dateNum * 24; i++) {
+                System.out.println("배열 " + i + "번 째");
+                m = (n*5 - i*5 < 0) ? (60 + n*5 - i*5)  : (n*5 - i*5);
+
+                while(m < 0) {
+                    m += 60;
+                }
+                if (m == 55) {
+                    mMinus ++;
                 }
 
-                // NN시 1분 미만일 경우 -N분이 되지 않도록 처리 && 시(Hour) 변경
-                else {
-                    // 12시일 경우 일/시 모두 변경
-                    if(nowHour == 0) {
-                        sleep = userStatusRepository.findWeekOrMonthAndChangeDay(60 + nowMinute - i + 1);
-                    }
-                    // 아닌 경우 시(Hour)만 변경
-                    else {
-                        sleep = userStatusRepository.findWeekOrMonth(60 + nowMinute - i + 1, minusNum);
-                    }
+                if(i == 0){
+                    System.out.println("0 : " + nowMinute + "분 " + m + "초 부터 " + nowSecond + "초 까지");
+                    sleep = userStatusRepository.findWeekOrMonth(m, nowSecond, 0, 0);
+                }
+                else if(n*5 - i*5 < 0 && (nowMinute - mMinus) >= 0) {
+                    System.out.println("1 : " + (nowMinute - mMinus) + "분 " + m + "초 부터 " + (m + 4) + "초 까지");
+                    sleep = userStatusRepository.findWeekOrMonth(m, m + 4, -mMinus, 0);
+                }
+                else if(nowMinute - mMinus < 0) {
+                    System.out.println("2 : " + (nowHour - 1) + "시 " + (60 + nowMinute - mMinus) + "분 " + m + "초 부터 " + (m + 4) + "초 까지");
+                    sleep = userStatusRepository.findWeekOrMonth(m, m + 4, -mMinus, -1);
+                }
+                else{
+                    System.out.println("3 : " + nowMinute + "분 " + m + "초 부터 " + (m + 4) + "초 까지");
+                    sleep = userStatusRepository.findWeekOrMonth(m, m + 4, 0, 0);
                 }
 
-                s += sleep.size();
+                s += (sleep.size() != 0 ? 1 : 0);
+                System.out.println("1시간 동안의 총 취침 시간 : " + (sleep.size() != 0 ? 1 : 0));
 
-                // 하루 = 2분이므로 00분 ~ 1분, 2분 ~ 3분으로 나누기 때문에
-                // 현재 NN시 3분이라면 00분 ~ 1분, 2분 ~ 3분 각각을 더해서 반환,
-                // 현재 NN시 2분이라면 00분 ~ 1분, 2분 각각을 더해서 반환
-                // 즉, 현재 짝수 분이라면 현재 분의 열림 횟수만 반환
-                // 현재 홀수 분이라면 전 짝수 분까지의 열림 횟수를 더해서 반환
-                if((nowMinute - i + 1) % 2 == 0) {
+                if(i != 0 && (nowMinute - mMinus) % 2 == 0 && m == 0) {
+                    System.out.println("하루 동안의 총 취침 시간 : " + s);
+                    System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++");
                     result.add(String.valueOf(s));
                     s = 0;
                 }
