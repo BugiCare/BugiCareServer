@@ -22,7 +22,7 @@ public class FurnitureGraphService {
     private final int minusNum = -1;
     private int dateNum;
     private int monthSum;
-    private int n, m;
+    private int n, m, sum;
 
     @Autowired
     public FurnitureGraphService(RefrigeratorRepository refriRepository, DoorRepository doorRepository) {
@@ -38,11 +38,12 @@ public class FurnitureGraphService {
         List<Refrigerator> refrigerator;
         List<Door> door;
 
-        // 반환할 String 배열, dayCount는 6개의 인자를, weekCount는 7개의 인자를, monthCount는 4개의 인자를 가진 String 배열이다.
+        // 반환할 String 배열, dayResult는 1개의 인자를, weekResult는 7개의 인자를, monthResult는 4개의 인자를 가진 String 배열이다.
         List<String> dayResult = new ArrayList<>();
         List<String> weekResult = new ArrayList<>();
         List<String> monthResult = new ArrayList<>();
-        int s = 0;
+
+        sum = 0;
         monthSum = 0;
 
         // 현재 시, 분, 초 알아오기
@@ -103,18 +104,12 @@ public class FurnitureGraphService {
         else {
             dateNum = (date.equals("week") ? 7 : 14);
 
-            System.out.println("nowHour : " + nowHour);
-            System.out.println("nowMinute : " + nowMinute);
-            System.out.println("nowSecond : " + nowSecond);
-            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++");
-
             // 일주일 or 한 달 동안의 냉장고 문 열림 횟수
             if(furniture.equals("refrigerator")){
                 // 주 or 월 이냐에 따라서 배열이 생성
                 for(int i = 1; i <= (dateNum * 2); i++) {
                     // NN시 1분 이상일 경우
                     if((nowMinute - i + 1)>= 0) {
-                        System.out.println("1 : " + (nowMinute - i + 1));
                         refrigerator = refriRepository.findWeekOrMonth(nowMinute - i + 1, 0);
                     }
 
@@ -122,18 +117,15 @@ public class FurnitureGraphService {
                     else {
                         // 12시일 경우 일/시 모두 변경
                         if(nowHour == 0) {
-                            System.out.println("2 : " + (60 + nowMinute - i + 1));
                             refrigerator = refriRepository.findWeekOrMonthAndChangeDay(60 + nowMinute - i + 1);
                         }
                         // 아닌 경우 시(Hour)만 변경
                         else {
-                            System.out.println("3 : " + (60 + nowMinute - i + 1));
                             refrigerator = refriRepository.findWeekOrMonth(60 + nowMinute - i + 1, minusNum);
                         }
                     }
 
-                    s += refrigerator.size();
-                    System.out.println("S : " + s);
+                    sum += refrigerator.size();
 
                     // 하루 = 2분이므로 00분 ~ 1분, 2분 ~ 3분으로 나누기 때문에
                     // 현재 NN시 3분이라면 00분 ~ 1분, 2분 ~ 3분 각을 더해서각반환,
@@ -141,13 +133,11 @@ public class FurnitureGraphService {
                     // 즉, 현재 짝수 분이라면 현재 분의 열림 횟수만 반환
                     // 현재 홀수 분이라면 전 짝수 분까지의 열림 횟수를 더해서 반환
                     // 또한 마지막에 홀수분이 남을 경우를 고려하여 마지막 원소도 배열에 추가
-                    // 일주일 동안의 횟수를 배열에 삽입. 또한 monthSum에 각각의 요일에 속하는 값을 + 한다.
+                    // 하루 동안의 횟수를 배열에 삽입. 또한 monthSum에 각각의 요일에 속하는 값을 + 한다.
                     if(((nowMinute - i + 1) % 2) == 0 || i == ((dateNum * 2) + 1)) {
-                        System.out.println("add S : " + s);
-                        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++");
-                        weekResult.add(String.valueOf(s));
-                        monthSum += s;
-                        s = 0;
+                        weekResult.add(String.valueOf(sum));
+                        monthSum += sum;
+                        sum = 0;
                     }
                     // 7일(일주일)이 지날 때마다 월(Month) 배열에 삽입
                     if (i != 0 && (i % 7) == 0){
@@ -169,7 +159,6 @@ public class FurnitureGraphService {
                 for(int i = 1; i <= (dateNum * 2); i++) {
                     // NN시 1분 이상일 경우
                     if((nowMinute - i + 1)>= 0) {
-                        System.out.println("1 : " + (nowMinute - i + 1));
                         door = doorRepository.findWeekOrMonth(nowMinute - i + 1, 0);
                     }
 
@@ -177,18 +166,15 @@ public class FurnitureGraphService {
                     else {
                         // 12시일 경우 일/시 모두 변경
                         if(nowHour == 0) {
-                            System.out.println("2 : " + (60 + nowMinute - i + 1));
                             door = doorRepository.findWeekOrMonthAndChangeDay(60 + nowMinute - i + 1);
                         }
                         // 아닌 경우 시(Hour)만 변경
                         else {
-                            System.out.println("3 : " + (60 + nowMinute - i + 1));
                             door = doorRepository.findWeekOrMonth(60 + nowMinute - i + 1, minusNum);
                         }
                     }
 
-                    s += door.size();
-                    System.out.println("S : " + s);
+                    sum += door.size();
 
                     // 하루 = 2분이므로 00분 ~ 1분, 2분 ~ 3분으로 나누기 때문에
                     // 현재 NN시 3분이라면 00분 ~ 1분, 2분 ~ 3분 각을 더해서각반환,
@@ -198,11 +184,9 @@ public class FurnitureGraphService {
                     // 또한 마지막에 홀수분이 남을 경우를 고려하여 마지막 원소도 배열에 추가
                     // 일주일 동안의 횟수를 배열에 삽입. 또한 monthSum에 각각의 요일에 속하는 값을 + 한다.
                     if(((nowMinute - i + 1) % 2) == 0 || i == ((dateNum * 2) + 1)) {
-                        System.out.println("add S : " + s);
-                        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++");
-                        weekResult.add(String.valueOf(s));
-                        monthSum += s;
-                        s = 0;
+                        weekResult.add(String.valueOf(sum));
+                        monthSum += sum;
+                        sum = 0;
                     }
                     // 7일(일주일)이 지날 때마다 월(Month) 배열에 삽입
                     if (i != 0 && (i % 7) == 0){
