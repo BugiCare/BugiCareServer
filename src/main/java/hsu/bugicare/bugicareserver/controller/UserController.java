@@ -55,6 +55,6 @@ public class UserController {
 
     @GetMapping(value = "/alarm")
     public void pushArarm() throws Exception {
-        fcmService.sendPushNotification("token");
+        fcmService.sendPushNotification();
     }
 }
