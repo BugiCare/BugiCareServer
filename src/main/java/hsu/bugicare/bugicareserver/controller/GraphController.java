@@ -3,6 +3,9 @@ package hsu.bugicare.bugicareserver.controller;
 import hsu.bugicare.bugicareserver.service.impl.FurnitureGraphService;
 import hsu.bugicare.bugicareserver.service.impl.UserStatusGraphService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +19,8 @@ public class GraphController {
 
     private String oldRefrigeratorStatus = "closeRefrigerator";
     private String oldDoorStatus = "closeDoor";
+    private String fallenStatus = "false";
+
 
     @Autowired
     public GraphController(FurnitureGraphService furnitureGraphService, UserStatusGraphService userStatusGraphService) {
@@ -39,6 +44,11 @@ public class GraphController {
         return userStatusGraphService.getCount(date);
     }
 
+    @GetMapping("/fallen")
+    public ResponseEntity<String> getFallen() {
+        return ResponseEntity.status(HttpStatus.OK).body(fallenStatus);
+    }
+
     @PostMapping("/result")
     public void postResult(@RequestBody Map<String, Object> data) {
         String result = data.get("result").toString();
@@ -56,12 +66,19 @@ public class GraphController {
 
         // Door
         if (result.contains("openDoor")) {
-            if (oldRefrigeratorStatus.equals("closeDoor")) {
+            if (oldDoorStatus.equals("closeDoor")) {
                 furnitureGraphService.saveDoor();
             }
-            oldRefrigeratorStatus = "openDoor";
+            oldDoorStatus = "openDoor";
         } else if (result.contains("closeDoor")) {
-            oldRefrigeratorStatus = "closeDoor";
+            oldDoorStatus = "closeDoor";
+        }
+
+        // 넘어짐
+        if (result.contains("fallenPerson")) {
+            fallenStatus = "true";
+        } else {
+            fallenStatus = "false";
         }
     }
 }
