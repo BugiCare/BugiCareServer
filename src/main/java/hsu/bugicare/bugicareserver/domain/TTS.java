@@ -1,10 +1,10 @@
 package hsu.bugicare.bugicareserver.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Getter
 @Entity
 public class TTS {

@@ -231,6 +231,10 @@ public class FurnitureGraphService {
         return ttsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 내용이 없습니다. id = " + id));
     }
 
+    public List<TTS> getAllTTS() {
+        return ttsRepository.findAll();
+    }
+
     public void saveTTSContent(TTS tts) {
         ttsRepository.save(tts);
     }

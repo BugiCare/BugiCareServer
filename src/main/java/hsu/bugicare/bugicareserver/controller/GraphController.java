@@ -83,9 +83,14 @@ public class GraphController {
         }
     }
 
-    @GetMapping("/tts")
+    @GetMapping("/TTS")
     public ResponseEntity<TTS> getTTS(Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(furnitureGraphService.getTTSContent(id));
+    }
+
+    @GetMapping("/allTTS")
+    public ResponseEntity<List<TTS>> getAllTTS() {
+        return ResponseEntity.status(HttpStatus.OK).body(furnitureGraphService.getAllTTS());
     }
 
     @PostMapping("/tts")
