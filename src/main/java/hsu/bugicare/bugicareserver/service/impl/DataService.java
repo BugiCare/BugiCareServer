@@ -2,9 +2,11 @@ package hsu.bugicare.bugicareserver.service.impl;
 
 import hsu.bugicare.bugicareserver.domain.Door;
 import hsu.bugicare.bugicareserver.domain.Refrigerator;
+import hsu.bugicare.bugicareserver.domain.Sleep;
 import hsu.bugicare.bugicareserver.domain.TTS;
 import hsu.bugicare.bugicareserver.repository.DoorRepository;
 import hsu.bugicare.bugicareserver.repository.RefrigeratorRepository;
+import hsu.bugicare.bugicareserver.repository.SleepRepository;
 import hsu.bugicare.bugicareserver.repository.TTSRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class FurnitureGraphService {
+public class DataService {
     private final RefrigeratorRepository refriRepository;
     private final DoorRepository doorRepository;
     private final TTSRepository ttsRepository;
+    private final SleepRepository sleepRepository;
 
     private int nowSecond;
     private int nowMinute;
@@ -28,10 +31,11 @@ public class FurnitureGraphService {
     private int n, m, sum;
 
     @Autowired
-    public FurnitureGraphService(RefrigeratorRepository refriRepository, DoorRepository doorRepository, TTSRepository ttsRepository) {
+    public DataService(RefrigeratorRepository refriRepository, DoorRepository doorRepository, TTSRepository ttsRepository, SleepRepository sleepRepository) {
         this.refriRepository = refriRepository;
         this.doorRepository = doorRepository;
         this.ttsRepository = ttsRepository;
+        this.sleepRepository = sleepRepository;
     }
 
     // date 값 = day, week, month
@@ -225,6 +229,14 @@ public class FurnitureGraphService {
                 .build();
 
         refriRepository.save(refrigerator);
+    }
+
+    public void saveSleep() {
+        Sleep sleep = Sleep.builder()
+                .status("Sleep")
+                .build();
+
+        sleepRepository.save(sleep);
     }
 
     public TTS getTTSContent(Long id) {

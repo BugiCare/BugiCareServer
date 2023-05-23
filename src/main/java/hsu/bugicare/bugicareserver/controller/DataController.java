@@ -1,11 +1,10 @@
 package hsu.bugicare.bugicareserver.controller;
 
 import hsu.bugicare.bugicareserver.domain.TTS;
-import hsu.bugicare.bugicareserver.service.impl.FurnitureGraphService;
+import hsu.bugicare.bugicareserver.service.impl.DataService;
 import hsu.bugicare.bugicareserver.service.impl.UserStatusGraphService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class GraphController {
+public class DataController {
 
-    private final FurnitureGraphService furnitureGraphService;
+    private final DataService dataService;
     private final UserStatusGraphService userStatusGraphService;
 
     private String oldRefrigeratorStatus = "closeRefrigerator";
@@ -24,8 +23,8 @@ public class GraphController {
 
 
     @Autowired
-    public GraphController(FurnitureGraphService furnitureGraphService, UserStatusGraphService userStatusGraphService) {
-        this.furnitureGraphService = furnitureGraphService;
+    public DataController(DataService dataService, UserStatusGraphService userStatusGraphService) {
+        this.dataService = dataService;
         this.userStatusGraphService = userStatusGraphService;
     }
 
@@ -35,7 +34,7 @@ public class GraphController {
     // 일주일 or 한 달 동안의 문 열림 횟수
     @GetMapping("/count/{date}/{furniture}")
     public List<String> getWeekOrMonthCount(@PathVariable String date, @PathVariable String furniture) {
-        return furnitureGraphService.getCount(date, furniture);
+        return dataService.getCount(date, furniture);
     }
 
     /* 어르신 취침 시간 */
@@ -58,7 +57,7 @@ public class GraphController {
         // Refrigerator
         if(result.contains("openRefrigerator")) {
             if(oldRefrigeratorStatus.equals("closeRefrigerator")) {
-                furnitureGraphService.saveRefrigerator();
+                dataService.saveRefrigerator();
             }
             oldRefrigeratorStatus = "openRefrigerator";
         } else if (result.contains("closeRefrigerator")) {
@@ -68,7 +67,7 @@ public class GraphController {
         // Door
         if (result.contains("openDoor")) {
             if (oldDoorStatus.equals("closeDoor")) {
-                furnitureGraphService.saveDoor();
+                dataService.saveDoor();
             }
             oldDoorStatus = "openDoor";
         } else if (result.contains("closeDoor")) {
@@ -81,20 +80,25 @@ public class GraphController {
         } else {
             fallenStatus = "false";
         }
+
+        // sleep
+        if(result.contains("sleepPerson")) {
+            dataService.saveSleep();
+        }
     }
 
     @GetMapping("/TTS")
     public ResponseEntity<TTS> getTTS(Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(furnitureGraphService.getTTSContent(id));
+        return ResponseEntity.status(HttpStatus.OK).body(dataService.getTTSContent(id));
     }
 
     @GetMapping("/allTTS")
     public ResponseEntity<List<TTS>> getAllTTS() {
-        return ResponseEntity.status(HttpStatus.OK).body(furnitureGraphService.getAllTTS());
+        return ResponseEntity.status(HttpStatus.OK).body(dataService.getAllTTS());
     }
 
     @PostMapping("/tts")
     public void saveTTS(String content) {
-        furnitureGraphService.saveTTSContent(new TTS(content));
+        dataService.saveTTSContent(new TTS(content));
     }
 }
