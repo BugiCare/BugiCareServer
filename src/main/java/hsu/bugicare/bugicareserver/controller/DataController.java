@@ -87,8 +87,8 @@ public class DataController {
         }
     }
 
-    @GetMapping("/TTS")
-    public ResponseEntity<TTS> getTTS(Long id) {
+    @GetMapping("/TTS/{id}")
+    public ResponseEntity<TTS> getTTS(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(dataService.getTTSContent(id));
     }
 
@@ -98,7 +98,12 @@ public class DataController {
     }
 
     @PostMapping("/tts")
-    public void saveTTS(String content) {
+    public void saveTTS(@RequestBody String content) {
         dataService.saveTTSContent(new TTS(content));
+    }
+
+    @DeleteMapping("/TTS/{id}")
+    public void deleteTTS(@PathVariable Long id) {
+        dataService.deleteTTS(id);
     }
 }

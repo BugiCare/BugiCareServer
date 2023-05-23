@@ -250,4 +250,8 @@ public class DataService {
     public void saveTTSContent(TTS tts) {
         ttsRepository.save(tts);
     }
+
+    public void deleteTTS(Long id) {
+        ttsRepository.deleteById(id);
+    }
 }
