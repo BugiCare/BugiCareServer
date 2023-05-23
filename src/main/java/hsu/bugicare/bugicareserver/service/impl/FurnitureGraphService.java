@@ -2,8 +2,10 @@ package hsu.bugicare.bugicareserver.service.impl;
 
 import hsu.bugicare.bugicareserver.domain.Door;
 import hsu.bugicare.bugicareserver.domain.Refrigerator;
+import hsu.bugicare.bugicareserver.domain.TTS;
 import hsu.bugicare.bugicareserver.repository.DoorRepository;
 import hsu.bugicare.bugicareserver.repository.RefrigeratorRepository;
+import hsu.bugicare.bugicareserver.repository.TTSRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.util.List;
 public class FurnitureGraphService {
     private final RefrigeratorRepository refriRepository;
     private final DoorRepository doorRepository;
+    private final TTSRepository ttsRepository;
 
     private int nowSecond;
     private int nowMinute;
@@ -25,9 +28,10 @@ public class FurnitureGraphService {
     private int n, m, sum;
 
     @Autowired
-    public FurnitureGraphService(RefrigeratorRepository refriRepository, DoorRepository doorRepository) {
+    public FurnitureGraphService(RefrigeratorRepository refriRepository, DoorRepository doorRepository, TTSRepository ttsRepository) {
         this.refriRepository = refriRepository;
         this.doorRepository = doorRepository;
+        this.ttsRepository = ttsRepository;
     }
 
     // date 값 = day, week, month
@@ -221,5 +225,13 @@ public class FurnitureGraphService {
                 .build();
 
         refriRepository.save(refrigerator);
+    }
+
+    public TTS getTTSContent(Long id) {
+        return ttsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 내용이 없습니다. id = " + id));
+    }
+
+    public void saveTTSContent(TTS tts) {
+        ttsRepository.save(tts);
     }
 }

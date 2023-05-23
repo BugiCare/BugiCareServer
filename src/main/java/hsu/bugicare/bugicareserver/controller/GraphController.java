@@ -1,5 +1,6 @@
 package hsu.bugicare.bugicareserver.controller;
 
+import hsu.bugicare.bugicareserver.domain.TTS;
 import hsu.bugicare.bugicareserver.service.impl.FurnitureGraphService;
 import hsu.bugicare.bugicareserver.service.impl.UserStatusGraphService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,5 +81,15 @@ public class GraphController {
         } else {
             fallenStatus = "false";
         }
+    }
+
+    @GetMapping("/tts")
+    public ResponseEntity<TTS> getTTS(Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(furnitureGraphService.getTTSContent(id));
+    }
+
+    @PostMapping("/tts")
+    public void saveTTS(String content) {
+        furnitureGraphService.saveTTSContent(new TTS(content));
     }
 }
