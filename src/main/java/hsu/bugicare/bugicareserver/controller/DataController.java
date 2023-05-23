@@ -82,7 +82,7 @@ public class DataController {
         }
 
         // sleep
-        if(result.contains("sleepPerson")) {
+        if(result.contains("sleepingPerson")) {
             dataService.saveSleep();
         }
     }
