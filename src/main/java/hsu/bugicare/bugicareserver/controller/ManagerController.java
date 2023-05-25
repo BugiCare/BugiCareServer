@@ -53,7 +53,7 @@ public class ManagerController {
 
     @GetMapping(value = "/manager_image", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<Resource> getManagerImage() throws IOException {
-        Path imagePath = Paths.get(IMAGES_PATH, "manager_khs.png");
+        Path imagePath = Paths.get(IMAGES_PATH, "manager_khs.jpeg");
         Resource resource = new UrlResource(imagePath.toUri());
         return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(resource);
     }
