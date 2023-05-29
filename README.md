@@ -21,19 +21,33 @@ $java -jar BugiCareServer-0.0.1-SNAPSHOT.jar
 
 ## ✏️ API
 
+#### 👨🏻‍💼 매니저
+
+http://15.164.7.163:8080/allManager
+
+http://15.164.7.163:8080/manager/{id}
+
+http://15.164.7.163:8080/myUser
+
+</br>
+
+#### 👵🏻 사용자
+
+http://15.164.7.163:8080/allUser
+
+http://15.164.7.163:8080/user/{id}
+
+http://15.164.7.163:8080/userImage/{id}
+
+</br>
+
 #### 🥶 냉장고 문 열림 횟수
 
 http://15.164.7.163:8080/count/day/refrigerator
 
-- 현재 ~ 5시간 전 
-
 http://15.164.7.163:8080/count/week/refrigerator
 
-- 최근 7일
-
 http://15.164.7.163:8080/count/month/refrigerator
-
-- 최근 28일
 
 </br>
 
@@ -41,15 +55,9 @@ http://15.164.7.163:8080/count/month/refrigerator
 
 http://15.164.7.163:8080/count/day/door
 
-- 현재 ~ 5시간 전 
-
 http://15.164.7.163:8080/count/week/door
 
-- 최근 7일
-
 http://15.164.7.163:8080/count/month/door
-
-- 최근 28일
 
 </br>
 
@@ -57,15 +65,9 @@ http://15.164.7.163:8080/count/month/door
 
 http://15.164.7.163:8080/sleepTime/day
 
-- 현재 취침 여부
-
 http://15.164.7.163:8080/sleepTime/week
 
-- 최근 7일
-
 http://15.164.7.163:8080/sleepTime/month
-
-- 최근 28일
 
 <br>
 
