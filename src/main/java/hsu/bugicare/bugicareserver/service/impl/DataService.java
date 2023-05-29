@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DataService {
@@ -232,11 +233,20 @@ public class DataService {
     }
 
     public void saveSleep() {
-        Sleep sleep = Sleep.builder()
-                .status("Sleep")
-                .build();
+        long count = sleepRepository.count();
+        Sleep oldSleep = sleepRepository.findById(count).orElseThrow(() -> new IllegalArgumentException("해당 데이터가 없습니다."));
 
-        sleepRepository.save(sleep);
+        int nowSecond = LocalTime.now().getSecond(); // 현재 초
+        int oldSecond = oldSleep.getTime().getSeconds(); // 최근 초
+
+
+        if(nowSecond / 5 != oldSecond / 5) {
+            Sleep sleep = Sleep.builder()
+                    .status("Sleep")
+                    .build();
+
+            sleepRepository.save(sleep);
+        }
     }
 
     public TTS getTTSContent(Long id) {
