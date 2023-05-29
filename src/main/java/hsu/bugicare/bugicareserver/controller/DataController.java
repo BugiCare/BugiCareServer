@@ -61,7 +61,7 @@ public class DataController {
                 dataService.saveRefrigerator();
             }
             oldRefrigeratorStatus = "openRefrigerator";
-        } else if (result.contains("closeRefrigerator")) {
+        } else {
             oldRefrigeratorStatus = "closeRefrigerator";
         }
 
@@ -71,7 +71,7 @@ public class DataController {
                 dataService.saveDoor();
             }
             oldDoorStatus = "openDoor";
-        } else if (result.contains("closeDoor")) {
+        } else {
             oldDoorStatus = "closeDoor";
         }
 
