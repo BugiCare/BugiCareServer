@@ -62,8 +62,13 @@ public class UserStatusGraphService {
             n = nowSecond / 5;
             mMinus = 0;
 
+            System.out.println("nowHour : " + nowHour);
+            System.out.println("nowMinute : " + nowMinute);
+            System.out.println("nowSecond : " + nowSecond);
+
             // 주 or 월 이냐에 따라서 배열이 생성
             for(int i = 0; i <= dateNum * 24; i++) {
+                System.out.println(i + "번 째");
                 m = (n*5 - i*5 < 0) ? (60 + n*5 - i*5)  : (n*5 - i*5);
 
                 while(m < 0) {
@@ -74,21 +79,26 @@ public class UserStatusGraphService {
                 }
 
                 if(i == 0){
+                    System.out.println("0 : " + nowMinute + "분 " + m + "초 부터 " + nowSecond + "초 까지");
                     sleep = userStatusRepository.findWeekOrMonth(m, nowSecond, 0, 0);
                 }
                 else if(n*5 - i*5 < 0 && (nowMinute - mMinus) >= 0) {
+                    System.out.println("1 : " + (nowMinute - mMinus) + "분 " + m + "초 부터 " + (m + 4) + "초 까지");
                     sleep = userStatusRepository.findWeekOrMonth(m, m + 4, -mMinus, 0);
                 }
                 // 구간이 이전 시(Hour)로 넘어갈 경우
                 else if(nowMinute - mMinus < 0) {
+                    System.out.println("2 : " + (nowHour - 1) + "시 " + (60 + nowMinute - mMinus) + "분 " + m + "초 부터 " + (m + 4) + "초 까지");
                     sleep = userStatusRepository.findWeekOrMonth(m, m + 4, 60 - mMinus, -1);
                 }
                 else{
+                    System.out.println("3 : " + nowMinute + "분 " + m + "초 부터 " + (m + 4) + "초 까지");
                     sleep = userStatusRepository.findWeekOrMonth(m, m + 4, 0, 0);
                 }
 
                 // 5초마다(1시간)의 구간에서 데이터가 존재하면 1 아니면 0
                 sum += (sleep.size() != 0 ? 1 : 0);
+                System.out.println("1시간 동안의 총 취침 시간 : " + (sleep.size() != 0 ? 1 : 0));
 
                 // 하루 = 2분이므로 00분 ~ 1분, 2분 ~ 3분으로 나누기 때문에
                 // 현재 NN시 3분이라면 00분 ~ 1분, 2분 ~ 3분 각을 더해서각반환,
@@ -97,6 +107,7 @@ public class UserStatusGraphService {
                 // 현재 홀수 분이라면 전 짝수 분까지의 열림 횟수를 더해서 반환
                 // 하루 동안의 횟수를 배열에 삽입. 또한 monthSum에 각각의 요일에 속하는 값을 + 한다.
                 if(i != 0 && (nowMinute - mMinus) % 2 == 0 && m == 0) {
+                    System.out.println("++++++++++++하루 동안의 총 취침 시간 : " + sum + "++++++++++++");
                     weekResult.add(String.valueOf(sum));
                     monthSum += sum;
                     sum = 0;
@@ -104,6 +115,7 @@ public class UserStatusGraphService {
                 }
                 // 7일(일주일)이 지날 때마다 월(Month) 배열에 삽입
                 if(i != 0 && flag == 7 && date.equals("month")){
+                    System.out.println("++++++++++++일주일 동안의 총 취침 시간 : " + monthSum + "++++++++++++");
                     monthResult.add(String.valueOf(monthSum));
                     sum = 0;
                     flag = 0;
