@@ -18,9 +18,9 @@ public class DataController {
     private final DataService dataService;
     private final UserStatusGraphService userStatusGraphService;
 
-    private String oldRefrigeratorStatus = "closeRefrigerator";
-    private String oldDoorStatus = "closeDoor";
-    private String fallenStatus = "false";
+    private boolean refrigeratorOpen = false;
+    private boolean doorOpen = false;
+    private boolean fallen = false;
 
 
     @Autowired
@@ -47,7 +47,7 @@ public class DataController {
 
     @GetMapping("/fallen")
     public ResponseEntity<String> getFallen() {
-        return ResponseEntity.status(HttpStatus.OK).body(fallenStatus);
+        return ResponseEntity.status(HttpStatus.OK).body(Boolean.toString(fallen));
     }
 
     @PostMapping("/result")
@@ -56,30 +56,30 @@ public class DataController {
         System.out.println(result);
 
         // Refrigerator
-        if(result.contains("openRefrigerator")) {
-            if(oldRefrigeratorStatus.equals("closeRefrigerator")) {
+        if(result.contains("openRefrigerator")) { // 냉장고 문이 열려있는 경우
+            if(!refrigeratorOpen) { // 전에 닫혀있던 경우에만 저장
                 dataService.saveRefrigerator();
             }
-            oldRefrigeratorStatus = "openRefrigerator";
-        } else {
-            oldRefrigeratorStatus = "closeRefrigerator";
+            refrigeratorOpen = true; // 열려있는 상태로 업데이트
+        } else if(result.contains("closeRefrigerator")){ // 냉장고 문이 닫혀있는 경우
+            refrigeratorOpen = false; // 닫혀있는 상태로 업데이트
         }
 
         // Door
-        if (result.contains("openDoor")) {
-            if (oldDoorStatus.equals("closeDoor")) {
+        if (result.contains("openDoor")) { // 문이 열려있는 경우
+            if (!doorOpen) { // 전에 닫혀있던 경우에만 저장
                 dataService.saveDoor();
             }
-            oldDoorStatus = "openDoor";
-        } else {
-            oldDoorStatus = "closeDoor";
+            doorOpen = true; // 열려있는 상태로 업데이트
+        } else { // 문이 닫혀있는 경우
+            doorOpen = false; // 닫혀있는 상태로 업데이트
         }
 
         // 넘어짐
-        if (result.contains("fallenPerson")) {
-            fallenStatus = "true";
+        if (result.contains("fallenPerson")) { // 넘어진 경우
+            fallen = true;
         } else {
-            fallenStatus = "false";
+            fallen = false;
         }
 
         // sleep
