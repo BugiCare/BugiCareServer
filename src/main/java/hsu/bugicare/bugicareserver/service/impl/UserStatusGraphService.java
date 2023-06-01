@@ -1,6 +1,7 @@
 package hsu.bugicare.bugicareserver.service.impl;
 
 import hsu.bugicare.bugicareserver.domain.Sleep;
+import hsu.bugicare.bugicareserver.repository.SleepRepository;
 import hsu.bugicare.bugicareserver.repository.UserStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.List;
 @Service
 public class UserStatusGraphService {
     private final UserStatusRepository userStatusRepository;
+    private final SleepRepository sleepRepository;
 
     private int nowSecond;
     private int nowMinute;
@@ -22,8 +24,9 @@ public class UserStatusGraphService {
     private int n, m, sum;
 
     @Autowired
-    public UserStatusGraphService(UserStatusRepository userStatusRepository) {
+    public UserStatusGraphService(UserStatusRepository userStatusRepository, SleepRepository sleepRepository) {
         this.userStatusRepository = userStatusRepository;
+        this.sleepRepository = sleepRepository;
     }
 
     // date 값 = day, week, month
@@ -49,9 +52,17 @@ public class UserStatusGraphService {
 
         // 현재(1시간 내)의 어르신 수면 여부. 1이면 취침 0이면 활동 중
         if(date.equals("day")) {
+            long count = sleepRepository.count();
+            Sleep oldSleep = sleepRepository.findById(count).orElseThrow(() -> new IllegalArgumentException("해당 데이터가 없습니다."));
 
-            sleep = userStatusRepository.findDay();
-            dayResult.add(String.valueOf(sleep.size() != 0 ? 1 : 0));
+            int oldSecond = oldSleep.getTime().getSeconds(); // 최근 초
+
+            // 데이터베이스의 최근 데이터와 현재 시간이 다르면 자고있지 않은 상태
+            if(nowSecond / 5 != oldSecond / 5) {
+                dayResult.add("0");
+            } else {
+                dayResult.add("1");
+            }
 
             // 배열 반환 (값이 하나밖에 없지만 API 반환값 통일성을 위해)
             return dayResult;
