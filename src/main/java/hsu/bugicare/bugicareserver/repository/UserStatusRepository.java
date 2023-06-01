@@ -27,9 +27,9 @@ public interface UserStatusRepository extends JpaRepository<Sleep, Long> {
     // DB에 저장되어 있는 값들 중 현재 시간과 비교하여 같은 일, 같은 시, 같은 분, beforeNum ~ afterNum 초 사이의 값 가져오기
     @Query("SELECT w FROM Sleep w WHERE DATE(w.time) = CURRENT_DATE " +
             "AND EXTRACT(HOUR FROM w.time) = EXTRACT(HOUR FROM CURRENT_TIMESTAMP)" +
-            "AND EXTRACT(MINUTE FROM w.time) = EXTRACT(MINUTE FROM CURRENT_TIMESTAMP) " +
+            "AND EXTRACT(MINUTE FROM w.time) = EXTRACT(MINUTE FROM CURRENT_TIMESTAMP) + :minus " +
             "AND EXTRACT(SECOND FROM w.time) BETWEEN EXTRACT(SECOND FROM :beforeNum) AND EXTRACT(SECOND FROM :afterNum)")
-    List<Sleep> findDay(@Param("beforeNum") int beforeNum, @Param("afterNum") int afterNum);
+    List<Sleep> findDay(@Param("beforeNum") int beforeNum, @Param("afterNum") int afterNum, @Param("minus") int minus);
 
     // DB에 저장되어 있는 값들 중 현재 시간과 비교하여 같은 일, 설정한 시, num 분의 레코드만 가져오기
     @Query("SELECT w FROM Sleep w WHERE DATE(w.time) = CURRENT_DATE " +
