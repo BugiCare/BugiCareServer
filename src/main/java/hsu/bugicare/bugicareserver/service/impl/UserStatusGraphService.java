@@ -59,7 +59,7 @@ public class UserStatusGraphService {
             int oldoldSecond = oldoldSleep.getTime().getSeconds(); // 최근 초
 
             // 데이터베이스의 최근 데이터와 현재 시간이 다르면 자고있지 않은 상태
-            if(nowSecond / 5 == oldSecond / 5 && nowSecond / 5 == oldoldSecond / 5) {
+            if(nowSecond / 5 == oldSecond / 5 || nowSecond / 5 == oldoldSecond / 5) {
                 dayResult.add("1");
             } else {
                 dayResult.add("0");
