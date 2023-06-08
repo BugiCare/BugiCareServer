@@ -52,19 +52,6 @@ public class UserStatusGraphService {
 
         // 현재(1시간 내)의 어르신 수면 여부. 1이면 취침 0이면 활동 중
         if(date.equals("day")) {
-//            long count = sleepRepository.count();
-//            Sleep oldSleep = sleepRepository.findById(count).orElseThrow(() -> new IllegalArgumentException("해당 데이터가 없습니다."));
-//            Sleep oldoldSleep = sleepRepository.findById(count - 1).orElseThrow(() -> new IllegalArgumentException("해당 데이터가 없습니다."));
-//            int oldSecond = oldSleep.getTime().getSeconds(); // 최근 초
-//            int oldoldSecond = oldoldSleep.getTime().getSeconds(); // 최근 초
-//
-//            // 데이터베이스의 최근 데이터와 현재 시간이 다르면 자고있지 않은 상태
-//            if(nowSecond / 5 == oldSecond / 5 || nowSecond / 5 == oldoldSecond / 5) {
-//                dayResult.add("1");
-//            } else {
-//                dayResult.add("0");
-//            }
-
             if(nowSecond/5 == 0){
                 sleep = userStatusRepository.findDay((nowSecond / 5) * 5, nowSecond, 0);
                 if(sleep.size() == 0){

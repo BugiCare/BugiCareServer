@@ -25,9 +25,6 @@ public class ManagerServiceImpl implements ManagerService {
     @Override
     public ManagerResponseDto findManager(Long id) {
         Manager manager = managerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 매니저가 없습니다. id = " + id));
-        System.out.println("*************************");
-        System.out.println(manager);
-        System.out.println("*************************");
 
         return ManagerResponseDto.builder()
                 .id(manager.getId())

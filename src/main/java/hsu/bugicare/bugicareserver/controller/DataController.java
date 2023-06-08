@@ -32,13 +32,12 @@ public class DataController {
     /* 가구 문 열림 횟수(하루, 일주일, 한 달 단위) */
     // date 값 = day, week, month
     // furniture 값 = refrigerator, door
-    // 일주일 or 한 달 동안의 문 열림 횟수
     @GetMapping("/count/{date}/{furniture}")
     public List<String> getWeekOrMonthCount(@PathVariable String date, @PathVariable String furniture) {
         return dataService.getCount(date, furniture);
     }
 
-    /* 어르신 취침 시간 */
+    /* 어르신 현재 상태 및 취침 시간 */
     // date 값 = day, week, month
     @GetMapping("/sleepTime/{date}")
     public List<String> getTime(@PathVariable String date) {
